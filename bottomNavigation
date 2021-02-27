@@ -1,0 +1,96 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:splashscreen/screens/feedscreen.dart';
+import 'package:splashscreen/screens/notificationscreen.dart';
+import 'package:splashscreen/screens/profilescreen.dart';
+import 'package:splashscreen/screens/servicescreen.dart';
+import 'package:splashscreen/screens/shopscreen.dart';
+import 'package:splashscreen/utils/tradefare.dart';
+
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => new _HomeScreenState();
+}
+
+
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  int _currentTab = 0;
+  PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child:  Scaffold(
+        body: PageView(
+          controller: _pageController,
+          children: <Widget>[
+            ProductScreen(),
+            ServiceScreen(),
+            FeedScreen(),
+            NotificationScreen(),
+            ProfileScreen(),
+          ],
+          onPageChanged: (int index) {
+            setState(() {
+              _currentTab = index;
+            });
+          },
+        ),
+        bottomNavigationBar: CupertinoTabBar(
+          currentIndex: _currentTab,
+          onTap: (int index) {
+            setState(() {
+              _currentTab = index;
+            });
+            _pageController.animateToPage(
+              index,
+              duration: Duration(milliseconds: 200),
+              curve: Curves.easeIn,
+            );
+          },
+          activeColor: Colors.black,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.shopping_basket,
+                size: 32.0,
+              ),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.group_work,
+                size: 32.0,
+              ),
+            ),
+
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.live_tv,
+                size: 32.0,
+                color: Colors.red,
+              ),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.notification_important,
+                size: 32.0,
+              ),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.account_circle,
+                size: 32.0,
+              ),
+            ),
+          ],
+        ),
+      )
+    );
+  }
+}
